@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Cio Bela renovation build log and Founding Stylist program.">
+<title>Building Cio Bela</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* Layout: a build journal. Hero, progress rail, phase-by-phase log with blueprint + photos, then the founding invitation. */
+:root{
+  --cream:#F5F0E8; --paper:#FBF8F3; --bark:#2C2016; --ink:#1A1410;
+  --gold:#B8935A; --gold-lt:#D4B896; --muted:#6E5F50; --line:#E3D9C9;
+  --bg:var(--cream); --fg:var(--bark); --surface:var(--paper); --accent:var(--gold);
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --sans:"Jost","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1A1410; --fg:#EFE7DA; --surface:#241B13; --muted:#B3A28C; --line:#3A2E22; --accent:#D4B896; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1A1410; --fg:#EFE7DA; --surface:#241B13; --muted:#B3A28C; --line:#3A2E22; --accent:#D4B896; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-weight:300;font-size:1.0625rem;line-height:1.7;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:clamp(16px,5vw,48px)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;text-wrap:balance;margin:0;line-height:1.1}
+h2{font-size:clamp(2rem,4.5vw,3rem);font-style:italic}
+h3{font-size:1.6rem}
+p{margin:0;max-width:62ch}
+.eyebrow{font-family:var(--sans);font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:500}
+section{padding-block:clamp(56px,9vw,104px);border-top:1px solid var(--line)}
+.stack{display:grid;gap:18px}
+a{color:inherit}
+
+/* Hero */
+.hero{position:relative;min-height:min(78vh,720px);display:flex;align-items:flex-end;color:#F5F0E8;background:#1A1410}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.62}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,20,16,.15) 30%,rgba(26,20,16,.88))}
+.hero .wrap{position:relative;z-index:1;padding-block:48px 56px;width:100%}
+.hero .eyebrow{color:#D4B896}
+.hero h1{font-size:clamp(2.6rem,7.5vw,5.4rem);font-style:italic;margin-block:14px 18px;max-width:14ch}
+.hero p{font-size:1.15rem;color:#EDE4D6}
+
+/* Progress rail */
+.rail{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:40px;border-top:1px solid var(--line)}
+.rail div{padding:18px 16px 0 0;border-top:3px solid var(--line);margin-top:-2px;min-width:0}
+.rail .done{border-color:var(--accent)}
+.rail .next{border-image:linear-gradient(90deg,var(--accent) 35%,var(--line) 35%) 1}
+.rail b{display:block;font-family:var(--serif);font-size:1.35rem;font-weight:500;font-style:italic}
+.rail small{font-size:.8rem;color:var(--muted);letter-spacing:.04em}
+
+/* Phases */
+.phase{display:grid;gap:28px;padding-block:44px;border-top:1px solid var(--line)}
+.phase:first-of-type{border-top:0}
+.phase-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px 20px}
+.num{font-family:var(--serif);font-size:3.4rem;line-height:1;color:var(--accent)}
+.pill{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;padding:5px 12px;border-radius:999px;border:1px solid var(--accent);font-weight:500}
+.pill.complete{background:var(--accent);color:var(--bg)}
+.pill.open{background:transparent;color:var(--accent)}
+.pill.upcoming{border-color:var(--line);color:var(--muted)}
+.phase-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start}
+.scope{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.scope li{padding-left:22px;position:relative}
+.scope li::before{content:"";position:absolute;left:0;top:.75em;width:10px;height:1px;background:var(--accent)}
+.plan{background:#fff;border:1px solid var(--line);padding:10px;cursor:zoom-in}
+.plan img{display:block;width:100%}
+.cap{font-size:.78rem;color:var(--muted);margin-top:8px;letter-spacing:.03em}
+.gallery{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:3/4;cursor:zoom-in}
+.gallery img.wide{aspect-ratio:auto;grid-row:span 1}
+.gallery-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.gallery-2 img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;cursor:zoom-in}
+.feature{background:var(--surface);border:1px solid var(--accent);padding:clamp(22px,4vw,36px)}
+
+/* Founding */
+.found{background:var(--bark);color:#F5F0E8;border-top:0}
+.found .eyebrow{color:#D4B896}
+.found p{color:#E6DCCC}
+.found h2{color:#F5F0E8}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:#4A3A2B;border:1px solid #4A3A2B;margin-top:40px}
+.cols div{background:var(--bark);padding:28px 26px;min-width:0}
+.cols h3{color:#D4B896;font-size:1.45rem;font-style:italic;margin-bottom:8px}
+
+.built{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:36px}
+.built h3{font-size:1.3rem;margin-bottom:6px}
+.built p{font-size:.95rem;color:var(--muted)}
+
+.eco{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.eco span{border:1px solid var(--line);padding:10px 18px;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.eco .you{border-color:var(--accent);background:var(--accent);color:var(--bg);font-weight:500}
+.cta{text-align:left}
+.btn{display:inline-block;background:var(--accent);color:var(--bg);text-decoration:none;padding:14px 28px;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--accent)}
+.btn:focus-visible,.plan:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:28px}
+.phone{font-family:var(--serif);font-size:1.6rem;user-select:all}
+footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line)}
+
+/* Lightbox */
+#lb{position:fixed;inset:0;background:rgba(15,11,8,.94);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10;cursor:zoom-out}
+#lb img{max-height:92vh;max-width:100%;object-fit:contain;background:#fff}
+
+@media (max-width:760px){
+  .phase-body,.cols,.built{grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr 1fr}
+  .gallery img.wide{grid-column:1/-1;aspect-ratio:16/10}
+  .rail{grid-template-columns:1fr;gap:14px}.rail div{padding:12px 0 0}
+}
+@media (prefers-reduced-motion:no-preference){.hero h1{animation:rise .9s ease-out both}@keyframes rise{from{transform:translateY(14px)}to{transform:none}}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img src="img/p1-station.jpg" alt="Finished oak artist station with brass lamp and arched slatted wall">
+  <div class="wrap">
+    <div class="eyebrow">Cio Bela · A Brand in the Making</div>
+    <h1>A brand in the making, built by the artists who join us now.</h1>
+    <p>Cio Bela is in the middle of a full, phase-by-phase renovation. This page is our open build log. It shows exactly where we are, what's finished, what's next, and where our founding stylists get to shape what comes after.</p>
+  </div>
+</header>
+
+<main>
+  <section style="border-top:0">
+    <div class="wrap stack">
+      <div class="eyebrow">A solid foundation, getting a facelift</div>
+      <h2>We're not starting from scratch.</h2>
+      <p>This salon has served our community for more than 15 years. The location, the foundation, and the clients who trust it are already here. What's changing is everything around them: the space, the look, and the identity of the brand.</p>
+      <p>What you see on our website is the destination. The building is getting there one phase at a time, and every finished phase is built to the same standard you see in the photos below.</p>
+      <div class="rail" id="rail"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="stack">
+        <div class="eyebrow">The build log</div>
+        <h2>The plans, and the progress</h2>
+        <p>These are our actual renovation blueprints. Each phase is highlighted on the floor plan, and we add finished photos as each one is completed.</p>
+      </div>
+      <div id="phases"></div>
+    </div>
+  </section>
+
+  <section class="found">
+    <div class="wrap stack">
+      <div class="eyebrow">Become a founding stylist</div>
+      <h2>No existing format to fit into. We're building it together.</h2>
+      <p>At most established salons, you join a brand that's already decided and learn to fit its rules. Here, the brand identity is still being written, and we're writing it as a team. Founding stylists help decide how the space looks, how it works, and what Cio Bela stands for, and then get to watch it come to life around them. Years from now, when clients walk into the finished salon, you'll know you helped build something bigger than any one of us.</p>
+      <div class="cols">
+        <div><h3>Shape your space</h3><p>Weigh in on the layout of the hair studio, station placement, the shampoo area, and the details you've always wished a salon got right.</p></div>
+        <div><h3>Build the identity together</h3><p>Help define who Cio Bela is: the client experience, the hair service menu, the product lines on the shelf, and the culture of the team.</p></div>
+        <div><h3>Grow roots in the community</h3><p>This is the beginning of Cio Bela's identity in Oak Ridge North and The Woodlands. Founding stylists are the faces of it, on our website, in our renovation content, and at the grand reveal.</p></div>
+        <div><h3>Grow with it</h3><p>Starting early means you're first in line as the brand expands, with a real say in where we go next.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="stack">
+        <div class="eyebrow">A multi-service ecosystem</div>
+        <h2>Your neighbors here send you clients. They don't compete for them.</h2>
+        <p>In a hair-only salon, every stylist is chasing the same clients, and nobody hands their regulars to the chair next door. Cio Bela works differently. You're surrounded by artists in other specialties who see clients every day who need a stylist, and none of them do hair.</p>
+        <p>Each lash fill, wax, manicure, and tanning session is a client already in the building, already trusting the brand, and one recommendation away from your chair. And your clients discover the rest of the salon too, which keeps them coming back to all of us.</p>
+      </div>
+      <div class="eco">
+        <span>Lashes</span><span>Nails</span><span>Waxing</span><span>Tanning</span><span>Permanent Jewelry</span><span class="you">Hair · your chair</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="stack">
+        <div class="eyebrow">Already up and running</div>
+        <h2>The space is in progress. The business isn't.</h2>
+        <p>While the walls change, the systems behind Cio Bela are already built and working for our artists every day.</p>
+      </div>
+      <div class="built">
+        <div><h3>Online booking</h3><p>A custom booking and payment system connected to our website, so clients can find you and book you directly.</p></div>
+        <div><h3>Marketing that tracks</h3><p>Promotions, QR campaigns, and social links tracked by artist, so you can see where your clients come from.</p></div>
+        <div><h3>Smooth onboarding</h3><p>A guided digital onboarding hub, clear agreements, and state compliance handled at the salon level.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap stack">
+      <div class="eyebrow">Come see it in person</div>
+      <h2>Walk the build with us.</h2>
+      <p>The best way to understand where Cio Bela is headed is to stand in it. Schedule a walkthrough, see the finished nail and waxing lounge, and look at the hair studio plans with us.</p>
+      <div class="row">
+        <a class="btn" href="https://shawntyd.github.io/cio-bela-artist-recruitment/" target="_blank" rel="noopener">Estimate your earnings</a>
+        <a class="btn ghost" href="https://ciobelasalons.com" target="_blank" rel="noopener">Visit ciobelasalons.com</a>
+      </div>
+      <p style="margin-top:18px;color:var(--muted)">Call or text to schedule a walkthrough</p>
+      <div class="phone">832-229-3155</div>
+      <p style="color:var(--muted)">27327 Robinson Rd., Suites 3 &amp; 4, Oak Ridge North, TX 77385</p>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">Cio Bela Multi-Service Salon · Build log updated <span id="updated"></span></div></footer>
+<div id="lb" hidden><img alt=""></div>
+
+<script>
+/* ===== EDIT HERE as each phase moves forward =====
+   status: "complete" | "in-progress" | "next" | "upcoming"
+   photos: add image file names after uploading to the img folder */
+const UPDATED = "October 2026";
+const PHASES = [
+  { n:1, name:"Nail & Waxing Lounge", status:"complete", label:"Complete",
+    intro:"The first phase transformed the nail and waxing side of the salon into the lounge it is today.",
+    scope:["Open nail technician stations with plumbing for three pedicure chairs","Heavy-duty ventilation for the nail area","Three private treatment rooms with dimmable lighting","A brand-new guest restroom","Polished, sealed concrete floors and updated storage"],
+    plan:"img/plan-phase1.jpg",
+    photos:["img/p1-pedicure.jpg","img/p1-station.jpg","img/p1-restroom.jpg","img/p1-greenwall.jpg"] },
+  { n:2, name:"Back of House", status:"next", label:"Up next",
+    intro:"Phase two upgrades the spaces that support the team every day.",
+    scope:["A fully refreshed second restroom","A reworked laundry room","A new employee lounge for the team to recharge between clients"],
+    plan:"img/plan-phase2.jpg", photos:[] },
+  { n:3, name:"The Hair Studio", status:"upcoming", label:"Founding input open", feature:true,
+    intro:"The largest phase of the renovation, and the one founding stylists help design. This is where the hair side of Cio Bela takes shape.",
+    scope:["About 611 sq ft of open stylist floor plus two adjoining rooms","Drop ceiling removed for an open, lofted ceiling with modern spiral ductwork","22 new hanging light fixtures on dimmers","Raised shampoo platform with an added shampoo chair","Floor outlets for flexible station placement","Polished, sealed concrete throughout"],
+    plan:"img/plan-phase3.jpg", photos:[] }
+];
+/* ================================================= */
+
+document.getElementById("updated").textContent = UPDATED;
+const rail = document.getElementById("rail");
+const cls = s => s==="complete"?"done":(s==="in-progress"||s==="next")?"next":"";
+rail.innerHTML = PHASES.map(p=>`<div class="${cls(p.status)}"><small>Phase ${p.n} · ${p.label}</small><b>${p.name}</b></div>`).join("");
+
+const pillCls = s => s==="complete"?"complete":s==="upcoming"?"open":"upcoming";
+document.getElementById("phases").innerHTML = PHASES.map(p=>{
+  let photos="";
+  if(p.photos.length>=4){
+    photos=`<div class="gallery"><img class="wide" src="${p.photos[0]}" alt="Phase ${p.n} finished space" loading="lazy"><img src="${p.photos[1]}" alt="Phase ${p.n} finished detail" loading="lazy"><img src="${p.photos[2]}" alt="Phase ${p.n} finished detail" loading="lazy"></div>
+      <div class="gallery-2">${p.photos.slice(3).map(s=>`<img src="${s}" alt="Phase ${p.n} finished detail" loading="lazy">`).join("")}</div>`;
+  } else if(p.photos.length){
+    photos=`<div class="gallery-2">${p.photos.map(s=>`<img src="${s}" alt="Phase ${p.n} progress" loading="lazy">`).join("")}</div>`;
+  }
+  const body=`<div class="stack"><p>${p.intro}</p><ul class="scope">${p.scope.map(s=>`<li>${s}</li>`).join("")}</ul>
+    ${p.feature?`<p style="margin-top:8px"><em style="font-family:var(--serif);font-size:1.3rem;color:var(--accent)">The hair studio hasn't been built yet, which means the stylists who join now help decide how it turns out.</em></p>`:""}</div>
+    <figure style="margin:0"><div class="plan" tabindex="0" role="button" aria-label="Enlarge Phase ${p.n} floor plan"><img src="${p.plan}" alt="Phase ${p.n} floor plan with the phase highlighted" loading="lazy"></div><figcaption class="cap">Floor plan · Phase ${p.n} highlighted. Tap to enlarge.</figcaption></figure>`;
+  return `<article class="phase">
+    <div class="phase-head"><span class="num">0${p.n}</span><h3>${p.name}</h3><span class="pill ${pillCls(p.status)}">${p.label}</span></div>
+    <div class="phase-body ${p.feature?"":""}">${body}</div>${photos}</article>`;
+}).join("");
+
+const lb=document.getElementById("lb"), lbImg=lb.querySelector("img");
+function open(src){lbImg.src=src;lb.hidden=false}
+document.addEventListener("click",e=>{
+  const t=e.target.closest(".plan, .gallery img, .gallery-2 img");
+  if(t){open(t.tagName==="IMG"?t.src:t.querySelector("img").src);return}
+  if(e.target.closest("#lb"))lb.hidden=true;
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")lb.hidden=true;
+  if(e.key==="Enter"&&e.target.classList.contains("plan"))open(e.target.querySelector("img").src);
+});
+</script>
+</body>
+</html>
