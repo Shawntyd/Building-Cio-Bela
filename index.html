@@ -34,10 +34,11 @@ a{color:inherit}
 
 /* Hero */
 .hero{position:relative;min-height:min(78vh,720px);display:flex;align-items:flex-end;color:#F5F0E8;background:#1A1410}
-.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.95}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,20,16,0) 35%,rgba(26,20,16,.8))}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9;filter:saturate(.8)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,20,16,.5) 0%,rgba(26,20,16,.62) 40%,rgba(26,20,16,.88))}
 .hero .wrap{position:relative;z-index:1;padding-block:48px 56px;width:100%}
-.hero .eyebrow{color:#D4B896}
+.hero .eyebrow{color:#EADBC0}
+.hero h1,.hero p{text-shadow:0 1px 18px rgba(0,0,0,.35)}
 .hero h1{font-size:clamp(2.6rem,7.5vw,5.4rem);font-style:italic;margin-block:14px 18px;max-width:14ch}
 .hero p{font-size:1.15rem;color:#EDE4D6}
 
