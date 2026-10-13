@@ -180,7 +180,7 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
 
 <div id="intro" role="dialog" aria-label="Cio Bela exterior transformation">
   <div class="splash" id="splash"><small>Oak Ridge North · The Woodlands</small><h2>CIO BELA</h2><hr><small>A Brand in the Making</small></div>
-  <div class="intro-top"><div class="toplab-wrap"><span class="toplab"><em id="labToday">Today</em><em class="v" id="labVision">The Vision</em></span></div><button type="button" id="skip">Skip</button></div>
+  <div class="intro-top"><div class="toplab-wrap"><span class="toplab"><em id="labToday">Today</em><em class="v" id="labVision">The Vision</em></span></div></div>
   <div class="intro-bg" style="background-image:url(img/bg-start.jpg)"></div><div class="intro-bg end" id="bgEnd" style="background-image:url(img/bg-end.jpg)"></div>
   <div class="intro-shade"></div>
   <div class="intro-stage">
@@ -296,7 +296,6 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
   v.addEventListener("play",()=>v.classList.add("playing"));
   v.addEventListener("click",()=>{ if(v.paused && !v.ended) v.play().catch(()=>{}); });
   enter.addEventListener("click",close);
-  document.getElementById("skip").addEventListener("click",close);
   const lt=document.getElementById("labToday"), lv=document.getElementById("labVision");
   function vision(){ lt.classList.remove("on"); lv.classList.add("on"); bgEnd.classList.add("on"); }
   v.addEventListener("timeupdate",()=>{ if(v.currentTime>=2.6) vision(); });
