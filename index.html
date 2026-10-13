@@ -70,6 +70,23 @@ a{color:inherit}
 .gallery img.wide{aspect-ratio:auto;grid-row:span 1}
 .gallery-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .gallery-2 img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;cursor:zoom-in}
+.areas{display:grid;gap:56px;margin-top:12px}
+.areas-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px}
+.areas-head h4{margin:0;font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.7rem}
+.area{display:grid;gap:18px}
+.area-title{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.area-title h4{margin:0;font-family:var(--serif);font-weight:500;font-size:1.5rem}
+.area-title span{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.pair .lbl{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:8px}
+.pair .plan{padding:6px}
+.pair ul{margin-top:12px}
+.shots{display:grid;gap:10px}
+.shots img{display:block;width:100%;height:auto;cursor:zoom-in}
+.shots.two{grid-template-columns:1fr 1fr}
+.shots.two img{aspect-ratio:3/4;object-fit:cover}
+.shots .lead{grid-column:1/-1;aspect-ratio:16/10;object-fit:cover}
+.soon{border:1px dashed var(--line);padding:40px 20px;text-align:center;color:var(--muted);font-size:.85rem;letter-spacing:.12em;text-transform:uppercase}
 .feature{background:var(--surface);border:1px solid var(--accent);padding:clamp(22px,4vw,36px)}
 
 /* Founding */
@@ -104,6 +121,7 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
   .phase-body,.cols,.built{grid-template-columns:1fr}
   .gallery{grid-template-columns:1fr 1fr}
   .gallery img.wide{grid-column:1/-1;aspect-ratio:16/10}
+  .pair{grid-template-columns:1fr}
   .rail{grid-template-columns:1fr;gap:14px}.rail div{padding:12px 0 0}
 }
 @media (prefers-reduced-motion:no-preference){.hero h1{animation:rise .9s ease-out both}@keyframes rise{from{transform:translateY(14px)}to{transform:none}}}
@@ -213,8 +231,21 @@ const PHASES = [
   { n:1, name:"Nail & Waxing Lounge", status:"complete", label:"Complete",
     intro:"The first phase transformed the nail and waxing side of the salon into the lounge it is today.",
     scope:["Open nail technician stations with plumbing for three pedicure chairs","Heavy-duty ventilation for the nail area","Three private treatment rooms with dimmable lighting","A brand-new guest restroom","Polished, sealed concrete floors and updated storage"],
-    plan:"img/plan-phase1.jpg",
-    photos:["img/p1-pedicure.jpg","img/p1-station.jpg","img/p1-restroom.jpg","img/p1-greenwall.jpg"] },
+    plan:"img/plan-phase1.jpg", photos:[],
+    areas:[
+      { name:"Nail Stations & Hallway", size:"About 277 sq ft",
+        plan:"img/area-nails.jpg",
+        did:["Removed three walls and two doors to open the space","Ran plumbing and drainage for three pedicure chairs","Installed three heavy-duty ventilation units","Added 120v outlets at each station","Rewired the hallway lighting","Polished and sealed the concrete floor"],
+        photos:["img/p1-pedicure.jpg","img/p1-station.jpg","img/p1-greenwall.jpg"] },
+      { name:"New Guest Restroom", size:"About 54 sq ft",
+        plan:"img/area-restroom.jpg",
+        did:["Built out a full second restroom","Hardwired a lighted vanity mirror and two wall sconces","Added an occupancy-sensor dimmer switch","New walls, handrail, and a sealed concrete floor"],
+        photos:["img/p1-restroom.jpg"] },
+      { name:"Treatment Rooms 1, 2 & 3", size:"Private waxing suites",
+        plan:"img/area-rooms.jpg",
+        did:["Converted every fixture to LED","Added dimmer switches in each room","Added an outlet outside Room 1 for a neon sign"],
+        photos:[] }
+    ] },
   { n:2, name:"Back of House", status:"next", label:"Up next",
     intro:"Phase two upgrades the spaces that support the team every day.",
     scope:["A fully refreshed second restroom","A reworked laundry room","A new employee lounge for the team to recharge between clients"],
@@ -243,6 +274,16 @@ document.getElementById("phases").innerHTML = PHASES.map(p=>{
   const body=`<div class="stack"><p>${p.intro}</p><ul class="scope">${p.scope.map(s=>`<li>${s}</li>`).join("")}</ul>
     ${p.feature?`<p style="margin-top:8px"><em style="font-family:var(--serif);font-size:1.3rem;color:var(--accent)">The hair studio hasn't been built yet, which means the stylists who join now help decide how it turns out.</em></p>`:""}</div>
     <figure style="margin:0"><div class="plan" tabindex="0" role="button" aria-label="Enlarge Phase ${p.n} floor plan"><img src="${p.plan}" alt="Phase ${p.n} floor plan with the phase highlighted" loading="lazy"></div><figcaption class="cap">Floor plan · Phase ${p.n} highlighted. Tap to enlarge.</figcaption></figure>`;
+  if(p.areas){
+    photos=`<div class="areas"><div class="areas-head"><h4>Area by area</h4><span class="cap" style="margin:0">The blueprint, then the finished space</span></div>${p.areas.map(a=>{
+      let shots;
+      if(!a.photos.length) shots=`<div class="soon">Finished photos coming soon</div>`;
+      else if(a.photos.length===1) shots=`<div class="shots"><img src="${a.photos[0]}" alt="${a.name}, finished" loading="lazy"></div>`;
+      else shots=`<div class="shots two"><img class="lead" src="${a.photos[0]}" alt="${a.name}, finished" loading="lazy">${a.photos.slice(1).map(s=>`<img src="${s}" alt="${a.name}, finished detail" loading="lazy">`).join("")}</div>`;
+      return `<div class="area"><div class="area-title"><h4>${a.name}</h4><span>${a.size}</span></div>
+        <div class="pair"><div><div class="lbl">The blueprint</div><div class="plan" tabindex="0" role="button" aria-label="Enlarge ${a.name} blueprint"><img src="${a.plan}" alt="${a.name} blueprint after renovation" loading="lazy"></div><ul class="scope">${a.did.map(d=>`<li>${d}</li>`).join("")}</ul></div>
+        <div><div class="lbl">The result</div>${shots}</div></div></div>`;}).join("")}</div>`;
+  }
   return `<article class="phase">
     <div class="phase-head"><span class="num">0${p.n}</span><h3>${p.name}</h3><span class="pill ${pillCls(p.status)}">${p.label}</span></div>
     <div class="phase-body ${p.feature?"":""}">${body}</div>${photos}</article>`;
@@ -251,7 +292,7 @@ document.getElementById("phases").innerHTML = PHASES.map(p=>{
 const lb=document.getElementById("lb"), lbImg=lb.querySelector("img");
 function open(src){lbImg.src=src;lb.hidden=false}
 document.addEventListener("click",e=>{
-  const t=e.target.closest(".plan, .gallery img, .gallery-2 img");
+  const t=e.target.closest(".plan, .gallery img, .gallery-2 img, .shots img");
   if(t){open(t.tagName==="IMG"?t.src:t.querySelector("img").src);return}
   if(e.target.closest("#lb"))lb.hidden=true;
 });
