@@ -135,6 +135,12 @@ a{color:inherit}
   #introVid{width:100%;max-width:none;height:58vh;max-height:none;object-fit:cover;object-position:51% 40%}
 }
 @keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ext{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:36px}
+.ext figure{margin:0;min-width:0}
+.ext img{display:block;width:100%;aspect-ratio:2.1/1;object-fit:cover;cursor:zoom-in}
+.ext-lbl{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px}
+.ext-lbl.v{color:var(--accent)}
+.ext .cap{grid-column:1/-1;margin-top:2px}
 .feature{background:var(--surface);border:1px solid var(--accent);padding:clamp(22px,4vw,36px)}
 
 /* Founding */
@@ -170,6 +176,7 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
   .gallery{grid-template-columns:1fr 1fr}
   .gallery img.wide{grid-column:1/-1;aspect-ratio:16/10}
   .pair{grid-template-columns:1fr}
+  .ext img{aspect-ratio:1/1;object-position:50% 60%}
   .vision{grid-template-columns:1fr}
   .rail{grid-template-columns:1fr;gap:14px}.rail div{padding:12px 0 0}
 }
@@ -178,18 +185,8 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
 </head>
 <body>
 
-<div id="intro" role="dialog" aria-label="Cio Bela exterior transformation">
-  <div class="splash" id="splash"><small>Oak Ridge North · The Woodlands</small><h2>CIO BELA</h2><hr><small>A Brand in the Making</small></div>
-  <div class="intro-top"><div class="toplab-wrap"><span class="toplab"><em id="labToday">Today</em><em class="v" id="labVision">The Vision</em></span></div></div>
-  <div class="intro-bg" style="background-image:url(img/bg-start.jpg)"></div><div class="intro-bg end" id="bgEnd" style="background-image:url(img/bg-end.jpg)"></div>
-  <div class="intro-shade"></div>
-  <div class="intro-stage">
-    <video id="introVid" src="img/exterior.mp4" poster="img/exterior-start.jpg" muted playsinline preload="auto"></video>
-  </div>
-  <div class="intro-bottom">
-    <p class="intro-line" id="introLine">Our storefront today, and the Cio Bela we're building.</p>
-    <button type="button" id="enter" class="enter" hidden>Enter</button>
-  </div>
+<div id="intro" aria-hidden="true">
+  <div class="splash"><small>Oak Ridge North · The Woodlands</small><h2>CIO BELA</h2><hr><small>A Brand in the Making</small></div>
 </div>
 
 <header class="hero">
@@ -218,6 +215,11 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
         <div class="eyebrow">The build log</div>
         <h2>The plans, and the progress</h2>
         <p>These are our actual renovation blueprints. Each phase is highlighted on the floor plan, and we add finished photos as each one is completed.</p>
+      </div>
+      <div class="ext">
+        <figure><div class="ext-lbl">Today</div><img src="img/ext-today.jpg" alt="The storefront today" loading="lazy"></figure>
+        <figure><div class="ext-lbl v">The Vision</div><img src="img/ext-vision.jpg" alt="Rendering of the Cio Bela storefront" loading="lazy"></figure>
+        <p class="cap">Our storefront today, and the exterior we're building toward. Same foundation, a whole new chapter.</p>
       </div>
       <div id="phases"></div>
     </div>
@@ -287,22 +289,9 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
 
 <script>
 (function(){
-  const intro=document.getElementById("intro"), v=document.getElementById("introVid"),
-        enter=document.getElementById("enter"), bgEnd=document.getElementById("bgEnd"), line=document.getElementById("introLine"), root=document.documentElement;
+  const intro=document.getElementById("intro"), root=document.documentElement;
   root.style.overflow="hidden";
-  function showEnter(){ if(!enter.hidden) return; line.textContent="Same foundation. A whole new chapter."; enter.hidden=false; }
-  function close(){ intro.classList.add("out"); root.style.overflow=""; setTimeout(()=>{intro.hidden=true; try{v.pause()}catch(e){}},800); }
-  v.addEventListener("ended",showEnter);
-  v.addEventListener("play",()=>v.classList.add("playing"));
-  v.addEventListener("click",()=>{ if(v.paused && !v.ended) v.play().catch(()=>{}); });
-  enter.addEventListener("click",close);
-  const lt=document.getElementById("labToday"), lv=document.getElementById("labVision");
-  function vision(){ lt.classList.remove("on"); lv.classList.add("on"); bgEnd.classList.add("on"); }
-  v.addEventListener("timeupdate",()=>{ if(v.currentTime>=2.6) vision(); });
-  v.addEventListener("ended",vision);
-  function start(){ const pr=v.play(); if(pr&&pr.catch) pr.catch(()=>{ line.textContent="Tap the video to play our transformation."; setTimeout(showEnter,2500); }); }
-  setTimeout(()=>{ lt.classList.add("on"); document.getElementById("splash").classList.add("gone"); setTimeout(start,1050); },1900);
-  setTimeout(showEnter,14000); /* safety: never trap the viewer */
+  setTimeout(()=>{ intro.classList.add("out"); root.style.overflow=""; setTimeout(()=>{intro.hidden=true},1000); },2000);
 })();
 /* ===== EDIT HERE as each phase moves forward =====
    status: "complete" | "in-progress" | "next" | "upcoming"
@@ -381,7 +370,7 @@ document.getElementById("phases").innerHTML = PHASES.map(p=>{
 const lb=document.getElementById("lb"), lbImg=lb.querySelector("img");
 function open(src){lbImg.src=src;lb.hidden=false}
 document.addEventListener("click",e=>{
-  const t=e.target.closest(".plan, .gallery img, .gallery-2 img, .shots img, .vision img");
+  const t=e.target.closest(".plan, .gallery img, .gallery-2 img, .shots img, .vision img, .ext img");
   if(t){open(t.tagName==="IMG"?t.src:t.querySelector("img").src);return}
   if(e.target.closest("#lb"))lb.hidden=true;
 });
