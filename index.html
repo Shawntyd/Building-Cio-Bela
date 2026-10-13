@@ -91,6 +91,13 @@ a{color:inherit}
 .vision img{display:block;width:100%;height:auto;cursor:zoom-in}
 .vision .lbl{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:10px}
 .vision p{font-family:var(--serif);font-style:italic;font-size:1.35rem;line-height:1.4}
+.dev{position:relative;overflow:hidden;background:var(--bark)}
+.dev img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:center 35%;filter:grayscale(.55) brightness(.62) blur(1.5px);transform:scale(1.03)}
+.dev-over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;padding:20px;color:#F5F0E8}
+.dev-over .tag{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;border:1px solid #D4B896;color:#D4B896;padding:7px 16px;font-weight:500}
+.dev-over h4{margin:0;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(2rem,6vw,3.6rem);line-height:1.05}
+.dev-over p{font-size:clamp(.85rem,2.5vw,1rem);letter-spacing:.06em;color:#E6DCCC;max-width:30ch}
+@media (max-width:760px){.dev img{aspect-ratio:4/5}}
 .feature{background:var(--surface);border:1px solid var(--accent);padding:clamp(22px,4vw,36px)}
 
 /* Founding */
@@ -259,7 +266,8 @@ const PHASES = [
   { n:3, name:"The Hair Studio", status:"upcoming", label:"Founding input open", feature:true,
     intro:"The largest phase of the renovation, and the one founding stylists help design. This is where the hair side of Cio Bela takes shape.",
     scope:["About 611 sq ft of open stylist floor plus two adjoining rooms","Drop ceiling removed for an open, lofted ceiling with modern spiral ductwork","22 new hanging light fixtures on dimmers","Raised shampoo platform with an added shampoo chair","Floor outlets for flexible station placement","Polished, sealed concrete throughout"],
-    plan:"img/plan-phase3.jpg", photos:[] }
+    plan:"img/plan-phase3.jpg", photos:[],
+    dev:{ img:"img/p3-vision.jpg", title:"In Development", line:"Being designed with our founding stylists" } }
 ];
 /* ================================================= */
 
@@ -292,6 +300,9 @@ document.getElementById("phases").innerHTML = PHASES.map(p=>{
   }
   if(p.vision){
     photos=`<div class="vision"><img src="${p.vision.img}" alt="Phase ${p.n} design inspiration" loading="lazy"><div><div class="lbl">The vision</div><p>${p.vision.caption}</p><p class="cap" style="font-family:var(--sans);font-style:normal;font-size:.8rem;margin-top:12px">Inspiration image. Finished photos will be added when this phase is complete.</p></div></div>`;
+  }
+  if(p.dev){
+    photos=`<div class="dev"><img src="${p.dev.img}" alt="Hair studio concept, in development" loading="lazy"><div class="dev-over"><span class="tag">Phase ${p.n} · Coming soon</span><h4>${p.dev.title}</h4><p>${p.dev.line}</p></div></div>`;
   }
   return `<article class="phase">
     <div class="phase-head"><span class="num">0${p.n}</span><h3>${p.name}</h3><span class="pill ${pillCls(p.status)}">${p.label}</span></div>
