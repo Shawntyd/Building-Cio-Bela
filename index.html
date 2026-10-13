@@ -87,6 +87,10 @@ a{color:inherit}
 .shots.two img{aspect-ratio:3/4;object-fit:cover}
 .shots .lead{grid-column:1/-1;aspect-ratio:16/10;object-fit:cover}
 .soon{border:1px dashed var(--line);padding:40px 20px;text-align:center;color:var(--muted);font-size:.85rem;letter-spacing:.12em;text-transform:uppercase}
+.vision{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;align-items:center;background:var(--surface);border:1px solid var(--line);padding:clamp(14px,3vw,24px)}
+.vision img{display:block;width:100%;height:auto;cursor:zoom-in}
+.vision .lbl{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:10px}
+.vision p{font-family:var(--serif);font-style:italic;font-size:1.35rem;line-height:1.4}
 .feature{background:var(--surface);border:1px solid var(--accent);padding:clamp(22px,4vw,36px)}
 
 /* Founding */
@@ -122,6 +126,7 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
   .gallery{grid-template-columns:1fr 1fr}
   .gallery img.wide{grid-column:1/-1;aspect-ratio:16/10}
   .pair{grid-template-columns:1fr}
+  .vision{grid-template-columns:1fr}
   .rail{grid-template-columns:1fr;gap:14px}.rail div{padding:12px 0 0}
 }
 @media (prefers-reduced-motion:no-preference){.hero h1{animation:rise .9s ease-out both}@keyframes rise{from{transform:translateY(14px)}to{transform:none}}}
@@ -249,7 +254,8 @@ const PHASES = [
   { n:2, name:"Back of House", status:"next", label:"Up next",
     intro:"Phase two upgrades the spaces that support the team every day.",
     scope:["A fully refreshed second restroom","A reworked laundry room","A new employee lounge for the team to recharge between clients"],
-    plan:"img/plan-phase2.jpg", photos:[] },
+    plan:"img/plan-phase2.jpg", photos:[],
+    vision:{ img:"img/p2-vision.jpg", caption:"Design inspiration for the employee lounge: soft linen, warm wood, brass, and whitewashed brick." } },
   { n:3, name:"The Hair Studio", status:"upcoming", label:"Founding input open", feature:true,
     intro:"The largest phase of the renovation, and the one founding stylists help design. This is where the hair side of Cio Bela takes shape.",
     scope:["About 611 sq ft of open stylist floor plus two adjoining rooms","Drop ceiling removed for an open, lofted ceiling with modern spiral ductwork","22 new hanging light fixtures on dimmers","Raised shampoo platform with an added shampoo chair","Floor outlets for flexible station placement","Polished, sealed concrete throughout"],
@@ -284,6 +290,9 @@ document.getElementById("phases").innerHTML = PHASES.map(p=>{
         <div class="pair"><div><div class="lbl">The blueprint</div><div class="plan" tabindex="0" role="button" aria-label="Enlarge ${a.name} blueprint"><img src="${a.plan}" alt="${a.name} blueprint after renovation" loading="lazy"></div><ul class="scope">${a.did.map(d=>`<li>${d}</li>`).join("")}</ul></div>
         <div><div class="lbl">The result</div>${shots}</div></div></div>`;}).join("")}</div>`;
   }
+  if(p.vision){
+    photos=`<div class="vision"><img src="${p.vision.img}" alt="Phase ${p.n} design inspiration" loading="lazy"><div><div class="lbl">The vision</div><p>${p.vision.caption}</p><p class="cap" style="font-family:var(--sans);font-style:normal;font-size:.8rem;margin-top:12px">Inspiration image. Finished photos will be added when this phase is complete.</p></div></div>`;
+  }
   return `<article class="phase">
     <div class="phase-head"><span class="num">0${p.n}</span><h3>${p.name}</h3><span class="pill ${pillCls(p.status)}">${p.label}</span></div>
     <div class="phase-body ${p.feature?"":""}">${body}</div>${photos}</article>`;
@@ -292,7 +301,7 @@ document.getElementById("phases").innerHTML = PHASES.map(p=>{
 const lb=document.getElementById("lb"), lbImg=lb.querySelector("img");
 function open(src){lbImg.src=src;lb.hidden=false}
 document.addEventListener("click",e=>{
-  const t=e.target.closest(".plan, .gallery img, .gallery-2 img, .shots img");
+  const t=e.target.closest(".plan, .gallery img, .gallery-2 img, .shots img, .vision img");
   if(t){open(t.tagName==="IMG"?t.src:t.querySelector("img").src);return}
   if(e.target.closest("#lb"))lb.hidden=true;
 });
