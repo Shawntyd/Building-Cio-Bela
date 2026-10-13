@@ -101,7 +101,8 @@ a{color:inherit}
 @media (max-width:760px){.dev img{aspect-ratio:4/5}}
 #intro{position:fixed;inset:0;z-index:20;background:#1A1410;color:#F5F0E8;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;padding:calc(env(safe-area-inset-top,0px) + 20px) 20px calc(env(safe-area-inset-bottom,0px) + 36px);transition:opacity 1s ease}
 #intro.out{opacity:0;pointer-events:none}
-.intro-bg{position:absolute;inset:-8%;width:116%;height:116%;object-fit:cover;filter:blur(28px) brightness(.55) saturate(.9);z-index:0}
+.intro-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;transition:opacity 1.4s ease}
+.intro-bg.end{opacity:0}.intro-bg.end.on{opacity:1}
 .intro-shade{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(26,20,16,.55) 0%,rgba(26,20,16,0) 28%,rgba(26,20,16,0) 62%,rgba(26,20,16,.85) 100%)}
 .intro-top,.intro-stage,.intro-bottom{position:relative;z-index:1}
 .intro-top{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:#EADBC0;max-width:1100px;width:100%;margin:0 auto}
@@ -126,7 +127,9 @@ a{color:inherit}
 #introVid.playing{animation:pushin 7s cubic-bezier(.25,.1,.25,1) forwards}
 @keyframes pushin{from{transform:scale(1)}to{transform:scale(1.05)}}
 .intro-top span{display:flex;align-items:center;gap:12px}
-.intro-top span::after{content:"";width:34px;height:1px;background:#B8935A}
+.toplab{display:grid!important}.toplab em{grid-area:1/1;font-style:normal;transition:opacity .9s ease;opacity:0}.toplab em.on{opacity:1}.toplab em.v{color:#D4B896}
+.toplab-wrap{display:flex;flex-direction:row-reverse;justify-content:flex-end;align-items:center;gap:12px}.toplab-wrap::after{content:"";width:34px;height:1px;background:#B8935A}
+
 @media (max-width:760px){
   .intro-stage{align-items:center;overflow:hidden}
   #introVid{width:100%;max-width:none;height:58vh;max-height:none;object-fit:cover;object-position:51% 40%}
@@ -177,11 +180,10 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
 
 <div id="intro" role="dialog" aria-label="Cio Bela exterior transformation">
   <div class="splash" id="splash"><small>Oak Ridge North · The Woodlands</small><h2>CIO BELA</h2><hr><small>A Brand in the Making</small></div>
-  <div class="intro-top"><span>Building Cio Bela</span><button type="button" id="skip">Skip</button></div>
-  <video id="introBg" class="intro-bg" src="img/exterior.mp4" poster="img/exterior-start.jpg" muted playsinline preload="auto" aria-hidden="true"></video>
+  <div class="intro-top"><div class="toplab-wrap"><span class="toplab"><em id="labToday">Today</em><em class="v" id="labVision">The Vision</em></span></div><button type="button" id="skip">Skip</button></div>
+  <div class="intro-bg" style="background-image:url(img/bg-start.jpg)"></div><div class="intro-bg end" id="bgEnd" style="background-image:url(img/bg-end.jpg)"></div>
   <div class="intro-shade"></div>
   <div class="intro-stage">
-    <div class="lab" id="labToday">Today</div><div class="lab vision" id="labVision">The Vision</div>
     <video id="introVid" src="img/exterior.mp4" poster="img/exterior-start.jpg" muted playsinline preload="auto"></video>
   </div>
   <div class="intro-bottom">
@@ -286,7 +288,7 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
 <script>
 (function(){
   const intro=document.getElementById("intro"), v=document.getElementById("introVid"),
-        enter=document.getElementById("enter"), bg=document.getElementById("introBg"), line=document.getElementById("introLine"), root=document.documentElement;
+        enter=document.getElementById("enter"), bgEnd=document.getElementById("bgEnd"), line=document.getElementById("introLine"), root=document.documentElement;
   root.style.overflow="hidden";
   function showEnter(){ if(!enter.hidden) return; line.textContent="Same foundation. A whole new chapter."; enter.hidden=false; }
   function close(){ intro.classList.add("out"); root.style.overflow=""; setTimeout(()=>{intro.hidden=true; try{v.pause()}catch(e){}},800); }
@@ -295,14 +297,12 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
   v.addEventListener("click",()=>{ if(v.paused && !v.ended) v.play().catch(()=>{}); });
   enter.addEventListener("click",close);
   document.getElementById("skip").addEventListener("click",close);
-  bg.play&&bg.play().catch(()=>{}); v.addEventListener("play",()=>{try{bg.currentTime=v.currentTime;bg.play().catch(()=>{})}catch(e){}}); v.addEventListener("ended",()=>{try{bg.pause()}catch(e){}});
   const lt=document.getElementById("labToday"), lv=document.getElementById("labVision");
-  v.addEventListener("play",()=>{ if(v.currentTime<2.7) lt.classList.add("on"); });
-  v.addEventListener("timeupdate",()=>{ const t=v.currentTime;
-    if(t>=1.6) lt.classList.remove("on"); else if(!v.paused) lt.classList.add("on");
-    if(t>=2.9) lv.classList.add("on"); });
+  function vision(){ lt.classList.remove("on"); lv.classList.add("on"); bgEnd.classList.add("on"); }
+  v.addEventListener("timeupdate",()=>{ if(v.currentTime>=2.6) vision(); });
+  v.addEventListener("ended",vision);
   function start(){ const pr=v.play(); if(pr&&pr.catch) pr.catch(()=>{ line.textContent="Tap the video to play our transformation."; setTimeout(showEnter,2500); }); }
-  setTimeout(()=>{ document.getElementById("splash").classList.add("gone"); setTimeout(start,450); },1900);
+  setTimeout(()=>{ lt.classList.add("on"); document.getElementById("splash").classList.add("gone"); setTimeout(start,1050); },1900);
   setTimeout(showEnter,14000); /* safety: never trap the viewer */
 })();
 /* ===== EDIT HERE as each phase moves forward =====
