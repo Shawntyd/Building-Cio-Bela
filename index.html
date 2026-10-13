@@ -107,19 +107,29 @@ a{color:inherit}
 .intro-top{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:#EADBC0;max-width:1100px;width:100%;margin:0 auto}
 #skip{background:none;border:0;color:#CFC1AC;font:inherit;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;padding:8px 0 8px 12px}
 .intro-stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;margin-inline:-20px}
-#introVid{display:block;width:100%;max-width:1200px;max-height:100%;object-fit:contain;cursor:pointer;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 88%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 88%,transparent 100%)}
+#introVid{display:block;width:100%;max-width:1200px;max-height:100%;object-fit:contain;cursor:pointer;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 58%,rgba(0,0,0,.35) 80%,transparent 96%);mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 58%,rgba(0,0,0,.35) 80%,transparent 96%)}
 .intro-bottom{display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;min-height:130px}
 .intro-line{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.5rem,5vw,2.3rem);line-height:1.2;max-width:22ch;color:#F5F0E8;text-shadow:0 2px 20px rgba(0,0,0,.5)}
 .enter{background:rgba(26,20,16,.15);color:#F5F0E8;border:1px solid rgba(234,219,192,.75);padding:13px 46px;font-family:var(--sans);font-weight:400;font-size:.74rem;letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fadeup 1.1s ease-out both;transition:background .3s,border-color .3s}
 .enter:hover{background:rgba(234,219,192,.14);border-color:#F5F0E8}
 .enter:focus-visible{outline:1px solid #EADBC0;outline-offset:4px}
+.splash{position:absolute;inset:0;z-index:5;background:#1A1410;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;transition:opacity 1s ease}
+.splash.gone{opacity:0;pointer-events:none}
+.splash h2{margin:0;font-family:var(--serif);font-weight:400;font-style:normal;font-size:clamp(3rem,13vw,5.5rem);letter-spacing:.14em;text-indent:.14em;color:#F5F0E8;animation:fadeup 1.2s ease-out both}
+.splash hr{width:54px;border:0;border-top:1px solid #B8935A;margin:0;animation:fadeup 1.2s .2s ease-out both}
+.splash small{font-size:.66rem;letter-spacing:.36em;text-transform:uppercase;color:#D4B896;animation:fadeup 1.2s .35s ease-out both}
+.intro-stage{position:relative}
+.lab{position:absolute;z-index:2;top:14%;left:16px;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;padding:7px 14px;color:#F5F0E8;background:rgba(26,20,16,.5);border:1px solid rgba(234,219,192,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:opacity .9s ease;opacity:0}
+.lab.vision{border-color:#B8935A;color:#EADBC0}
+.lab.on{opacity:1}
+@media (min-width:761px){.lab{left:max(16px,calc(50% - 560px))}}
 #introVid.playing{animation:pushin 7s cubic-bezier(.25,.1,.25,1) forwards}
-@keyframes pushin{from{transform:scale(1)}to{transform:scale(1.07)}}
+@keyframes pushin{from{transform:scale(1)}to{transform:scale(1.05)}}
 .intro-top span{display:flex;align-items:center;gap:12px}
 .intro-top span::after{content:"";width:34px;height:1px;background:#B8935A}
 @media (max-width:760px){
   .intro-stage{align-items:center;overflow:hidden}
-  #introVid{width:100%;max-width:none;height:62vh;max-height:none;object-fit:cover;object-position:47% 42%}
+  #introVid{width:100%;max-width:none;height:58vh;max-height:none;object-fit:cover;object-position:51% 40%}
 }
 @keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .feature{background:var(--surface);border:1px solid var(--accent);padding:clamp(22px,4vw,36px)}
@@ -166,10 +176,12 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
 <body>
 
 <div id="intro" role="dialog" aria-label="Cio Bela exterior transformation">
+  <div class="splash" id="splash"><small>Oak Ridge North · The Woodlands</small><h2>CIO BELA</h2><hr><small>A Brand in the Making</small></div>
   <div class="intro-top"><span>Building Cio Bela</span><button type="button" id="skip">Skip</button></div>
   <video id="introBg" class="intro-bg" src="img/exterior.mp4" poster="img/exterior-start.jpg" muted playsinline preload="auto" aria-hidden="true"></video>
   <div class="intro-shade"></div>
   <div class="intro-stage">
+    <div class="lab" id="labToday">Today</div><div class="lab vision" id="labVision">The Vision</div>
     <video id="introVid" src="img/exterior.mp4" poster="img/exterior-start.jpg" muted playsinline preload="auto"></video>
   </div>
   <div class="intro-bottom">
@@ -284,8 +296,14 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
   enter.addEventListener("click",close);
   document.getElementById("skip").addEventListener("click",close);
   bg.play&&bg.play().catch(()=>{}); v.addEventListener("play",()=>{try{bg.currentTime=v.currentTime;bg.play().catch(()=>{})}catch(e){}}); v.addEventListener("ended",()=>{try{bg.pause()}catch(e){}});
-  const pr=v.play(); if(pr&&pr.catch) pr.catch(()=>{ line.textContent="Tap the video to play our transformation."; setTimeout(showEnter,2500); });
-  setTimeout(showEnter,12000); /* safety: never trap the viewer */
+  const lt=document.getElementById("labToday"), lv=document.getElementById("labVision");
+  v.addEventListener("play",()=>{ if(v.currentTime<2.7) lt.classList.add("on"); });
+  v.addEventListener("timeupdate",()=>{ const t=v.currentTime;
+    if(t>=1.6) lt.classList.remove("on"); else if(!v.paused) lt.classList.add("on");
+    if(t>=2.9) lv.classList.add("on"); });
+  function start(){ const pr=v.play(); if(pr&&pr.catch) pr.catch(()=>{ line.textContent="Tap the video to play our transformation."; setTimeout(showEnter,2500); }); }
+  setTimeout(()=>{ document.getElementById("splash").classList.add("gone"); setTimeout(start,450); },1900);
+  setTimeout(showEnter,14000); /* safety: never trap the viewer */
 })();
 /* ===== EDIT HERE as each phase moves forward =====
    status: "complete" | "in-progress" | "next" | "upcoming"
