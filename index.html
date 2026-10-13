@@ -99,6 +99,17 @@ a{color:inherit}
 .dev-over h4{margin:0;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(2rem,6vw,3.6rem);line-height:1.05}
 .dev-over p{font-size:clamp(.85rem,2.5vw,1rem);letter-spacing:.06em;color:#E6DCCC;max-width:30ch}
 @media (max-width:760px){.dev img{aspect-ratio:4/5}}
+#intro{position:fixed;inset:0;z-index:20;background:#1A1410;color:#F5F0E8;display:flex;flex-direction:column;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 18px) 16px calc(env(safe-area-inset-bottom,0px) + 28px);transition:opacity .8s ease}
+#intro.out{opacity:0;pointer-events:none}
+.intro-top{display:flex;justify-content:space-between;align-items:center;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:#D4B896;max-width:1100px;width:100%;margin:0 auto}
+#skip{background:none;border:0;color:#B3A28C;font:inherit;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;padding:8px 0 8px 12px}
+.intro-stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding-block:16px}
+#introVid{display:block;width:100%;max-width:1100px;max-height:100%;object-fit:contain;cursor:pointer}
+.intro-bottom{display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;min-height:120px}
+.intro-line{font-family:var(--serif);font-style:italic;font-size:clamp(1.35rem,4.5vw,2.1rem);line-height:1.25;max-width:24ch;color:#F5F0E8;transition:opacity .6s}
+.enter{background:transparent;color:#F5F0E8;border:1px solid #D4B896;padding:15px 52px;font-family:var(--sans);font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;animation:fadeup .9s ease-out both}
+.enter:hover,.enter:focus-visible{background:#B8935A;border-color:#B8935A;outline:none}
+@keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .feature{background:var(--surface);border:1px solid var(--accent);padding:clamp(22px,4vw,36px)}
 
 /* Founding */
@@ -141,6 +152,17 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
 </style>
 </head>
 <body>
+
+<div id="intro" role="dialog" aria-label="Cio Bela exterior transformation">
+  <div class="intro-top"><span>Building Cio Bela</span><button type="button" id="skip">Skip</button></div>
+  <div class="intro-stage">
+    <video id="introVid" src="img/exterior.mp4" poster="img/exterior-start.jpg" muted playsinline preload="auto"></video>
+  </div>
+  <div class="intro-bottom">
+    <p class="intro-line" id="introLine">Our storefront today, and the Cio Bela we're building.</p>
+    <button type="button" id="enter" class="enter" hidden>Enter</button>
+  </div>
+</div>
 
 <header class="hero">
   <img src="img/p1-station.jpg" alt="Finished oak artist station with brass lamp and arched slatted wall">
@@ -236,6 +258,19 @@ footer{padding-block:40px;font-size:.8rem;color:var(--muted);border-top:1px soli
 <div id="lb" hidden><img alt=""></div>
 
 <script>
+(function(){
+  const intro=document.getElementById("intro"), v=document.getElementById("introVid"),
+        enter=document.getElementById("enter"), line=document.getElementById("introLine"), root=document.documentElement;
+  root.style.overflow="hidden";
+  function showEnter(){ if(!enter.hidden) return; line.textContent="Same foundation. A whole new chapter."; enter.hidden=false; try{enter.focus({preventScroll:true})}catch(e){} }
+  function close(){ intro.classList.add("out"); root.style.overflow=""; setTimeout(()=>{intro.hidden=true; try{v.pause()}catch(e){}},800); }
+  v.addEventListener("ended",showEnter);
+  v.addEventListener("click",()=>{ if(v.paused && !v.ended) v.play().catch(()=>{}); });
+  enter.addEventListener("click",close);
+  document.getElementById("skip").addEventListener("click",close);
+  const pr=v.play(); if(pr&&pr.catch) pr.catch(()=>{ line.textContent="Tap the video to play our transformation."; setTimeout(showEnter,2500); });
+  setTimeout(showEnter,12000); /* safety: never trap the viewer */
+})();
 /* ===== EDIT HERE as each phase moves forward =====
    status: "complete" | "in-progress" | "next" | "upcoming"
    photos: add image file names after uploading to the img folder */
